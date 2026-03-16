@@ -142,7 +142,17 @@ def is_bad_version(version_str, version_comparator=cmp_pkg_version):
     -------
     bool
         True if the version is too high (older), False otherwise.
+
+    Notes
+    -----
+    When running from a local checkout, ``__version__`` may be ``"0+unknown"``.
+    In that case, assume the package version is newer than any released version
+    so that deprecations can be tested and will expire as expected.
     """
+
+    if __version__.endswith("+unknown"):
+        return True
+
     return version_comparator(version_str) == -1
 
 
