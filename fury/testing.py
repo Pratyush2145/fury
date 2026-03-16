@@ -1,13 +1,14 @@
 """Utilities for testing."""
 
 from contextlib import contextmanager
-from distutils.version import LooseVersion
 from functools import partial
 import io
 import json
 import operator
 import sys
 import warnings
+
+from packaging.version import parse as parse_version
 
 import numpy as np
 from numpy.testing import assert_array_equal
@@ -339,7 +340,7 @@ def setup_test():
     https://github.com/numpy/numpy/commit/734b907fc2f7af6e40ec989ca49ee6d87e21c495
     https://github.com/nipy/nibabel/pull/556
     """
-    if LooseVersion(np.__version__) >= LooseVersion("1.14"):
+    if parse_version(np.__version__) >= parse_version("1.14"):
         np.set_printoptions(legacy="1.13")
 
     # Temporary fix until scipy release in October 2018
@@ -347,8 +348,8 @@ def setup_test():
     # print the first occurrence of matching warnings for each location
     # (module + line number) where the warning is issued
     if (
-        LooseVersion(np.__version__) >= LooseVersion("1.15")
-        and LooseVersion(scipy.version.short_version) <= "1.1.0"
+        parse_version(np.__version__) >= parse_version("1.15")
+        and parse_version(scipy.version.short_version) <= parse_version("1.1.0")
     ):
         warnings.simplefilter("default")
 
